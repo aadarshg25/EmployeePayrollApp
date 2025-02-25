@@ -2,6 +2,7 @@ package com.tit.employeepayrollapp.service;
 
 import com.tit.employeepayrollapp.dto.EmployeeDTO;
 import com.tit.employeepayrollapp.entity.Employee;
+import com.tit.employeepayrollapp.exception.EmployeeNotFoundException;
 import com.tit.employeepayrollapp.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,9 @@ public class EmployeeService {
     }
 
     public ResponseEntity<EmployeeDTO> getEmployeeById(Long id) {
-        Optional<Employee> employee = repository.findById(id);
-        return employee.map(emp -> ResponseEntity.ok(modelMapper.map(emp, EmployeeDTO.class)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+        return ResponseEntity.ok(modelMapper.map(employee, EmployeeDTO.class));
     }
 
     public ResponseEntity<EmployeeDTO> addEmployee(EmployeeDTO employeeDTO) {
