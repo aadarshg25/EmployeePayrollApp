@@ -1,9 +1,10 @@
 package com.tit.employeepayrollapp.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.*;
 import lombok.Data;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 @Data
 public class EmployeeDTO {
@@ -13,10 +14,23 @@ public class EmployeeDTO {
     private String name;
 
     private double salary;
+
+    @NotBlank(message = "Department is required and cannot be empty.")
     private String department;
+
+    @NotBlank(message = "Gender is required and cannot be empty.")
+    @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other.")
     private String gender;
-    private Date startDate;
+
+    @NotNull(message = "Start date is required.")
+    @PastOrPresent(message = "Start date must be in the past or present.")
+    @JsonFormat(pattern = "dd MMM yyyy")
+    private LocalDate startDate;
+
+    @NotBlank(message = "Note cannot be empty.")
     private String note;
+
+    @NotBlank(message = "Profile picture URL is required.")
     private String profilePic;
 }
 
