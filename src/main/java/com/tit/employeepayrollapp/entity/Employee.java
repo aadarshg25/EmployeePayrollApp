@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Date;
 
 @Entity
 @Data
@@ -27,8 +28,8 @@ public class Employee {
 
     private double salary;
     private String department;
-
-    public void logEmployeeCreation() {
-        log.info("Employee created: {}", this);
-    }
+    private String gender;
+    private Date startDate;
+    private String note;
+    private String profilePic;
 }

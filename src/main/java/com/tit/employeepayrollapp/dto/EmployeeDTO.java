@@ -3,6 +3,7 @@ package com.tit.employeepayrollapp.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import java.util.Date;
 
 @Data
 public class EmployeeDTO {
@@ -13,18 +14,9 @@ public class EmployeeDTO {
 
     private double salary;
     private String department;
-
-    public EmployeeDTO() {}
-
-    public EmployeeDTO(String name, double salary) {
-        this.name = name;
-        this.salary = salary;
-    }
-
-    // Getters and Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public double getSalary() { return salary; }
-    public void setSalary(double salary) { this.salary = salary; }
+    private String gender;
+    private Date startDate;
+    private String note;
+    private String profilePic;
 }
 

@@ -43,17 +43,19 @@ public class EmployeeService {
         Employee existingEmployee = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
 
-        // Update only necessary fields
         existingEmployee.setName(employeeDTO.getName());
         existingEmployee.setSalary(employeeDTO.getSalary());
         existingEmployee.setDepartment(employeeDTO.getDepartment());
+        existingEmployee.setGender(employeeDTO.getGender());
+        existingEmployee.setStartDate(employeeDTO.getStartDate());
+        existingEmployee.setNote(employeeDTO.getNote());
+        existingEmployee.setProfilePic(employeeDTO.getProfilePic());
 
         Employee updatedEmployee = repository.save(existingEmployee);
         EmployeeDTO updatedDTO = modelMapper.map(updatedEmployee, EmployeeDTO.class);
 
         return ResponseEntity.ok(updatedDTO);
     }
-
 
     public ResponseEntity<Void> deleteEmployee(Long id) {
         if (!repository.existsById(id)) {
