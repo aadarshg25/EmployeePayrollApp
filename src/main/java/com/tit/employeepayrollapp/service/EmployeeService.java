@@ -40,15 +40,11 @@ public class EmployeeService {
         log.info("Adding new employee: {}", employeeDTO);
 
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
-
-        // Ensure departments list is correctly mapped
         employee.setDepartments(employeeDTO.getDepartments());
 
         Employee savedEmployee = repository.save(employee);
         return ResponseEntity.ok(modelMapper.map(savedEmployee, EmployeeDTO.class));
     }
-
-
 
     public ResponseEntity<EmployeeDTO> updateEmployee(Long id, EmployeeDTO employeeDTO) {
         log.info("Updating employee with ID: {}", id);
@@ -67,7 +63,6 @@ public class EmployeeService {
         return ResponseEntity.ok(modelMapper.map(updatedEmployee, EmployeeDTO.class));
     }
 
-
     public ResponseEntity<Void> deleteEmployee(Long id) {
         log.info("Deleting employee with ID: {}", id);
         if (!repository.existsById(id)) {
@@ -76,4 +71,13 @@ public class EmployeeService {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesBySalesDepartment() {
+        log.info("Fetching employees from Sales department");
+        List<EmployeeDTO> employees = repository.findEmployeesByDepartment("Sales").stream()
+                .map(emp -> modelMapper.map(emp, EmployeeDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(employees);
+    }
 }
+
