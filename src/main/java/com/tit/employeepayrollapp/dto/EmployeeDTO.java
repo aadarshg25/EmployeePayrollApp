@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class EmployeeDTO {
@@ -15,8 +16,8 @@ public class EmployeeDTO {
 
     private double salary;
 
-    @NotBlank(message = "Department is required and cannot be empty.")
-    private String department;
+    @NotEmpty(message = "Department is required and cannot be empty.")
+    private List<String> departments;
 
     @NotBlank(message = "Gender is required and cannot be empty.")
     @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other.")
@@ -33,4 +34,5 @@ public class EmployeeDTO {
     @NotBlank(message = "Profile picture URL is required.")
     private String profilePic;
 }
+
 

@@ -1,23 +1,21 @@
 package com.tit.employeepayrollapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "employee_payroll")
 public class Employee {
-    private static final Logger log = LoggerFactory.getLogger(Employee.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +27,10 @@ public class Employee {
 
     private double salary;
 
-    @NotBlank(message = "Department is required and cannot be empty.")
-    private String department;
+    @ElementCollection
+    @CollectionTable(name = "employee_department", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "department")
+    private List<String> departments;
 
     @NotBlank(message = "Gender is required and cannot be empty.")
     @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other.")
@@ -46,8 +46,4 @@ public class Employee {
 
     @NotBlank(message = "Profile picture URL is required.")
     private String profilePic;
-
-    public void logEmployeeCreation() {
-        log.info("Employee created: {}", this);
-    }
 }

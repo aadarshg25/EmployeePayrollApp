@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,10 +38,17 @@ public class EmployeeService {
 
     public ResponseEntity<EmployeeDTO> addEmployee(EmployeeDTO employeeDTO) {
         log.info("Adding new employee: {}", employeeDTO);
+
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
+
+        // Ensure departments list is correctly mapped
+        employee.setDepartments(employeeDTO.getDepartments());
+
         Employee savedEmployee = repository.save(employee);
         return ResponseEntity.ok(modelMapper.map(savedEmployee, EmployeeDTO.class));
     }
+
+
 
     public ResponseEntity<EmployeeDTO> updateEmployee(Long id, EmployeeDTO employeeDTO) {
         log.info("Updating employee with ID: {}", id);
@@ -52,7 +57,7 @@ public class EmployeeService {
 
         existingEmployee.setName(employeeDTO.getName());
         existingEmployee.setSalary(employeeDTO.getSalary());
-        existingEmployee.setDepartment(employeeDTO.getDepartment());
+        existingEmployee.setDepartments(employeeDTO.getDepartments());
         existingEmployee.setGender(employeeDTO.getGender());
         existingEmployee.setStartDate(employeeDTO.getStartDate());
         existingEmployee.setNote(employeeDTO.getNote());
@@ -61,6 +66,7 @@ public class EmployeeService {
         Employee updatedEmployee = repository.save(existingEmployee);
         return ResponseEntity.ok(modelMapper.map(updatedEmployee, EmployeeDTO.class));
     }
+
 
     public ResponseEntity<Void> deleteEmployee(Long id) {
         log.info("Deleting employee with ID: {}", id);
